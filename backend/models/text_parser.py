@@ -1,15 +1,17 @@
 from transformers import pipeline
 import torch
 
-# Initialize model
 nlp_model = None
 
 def load_model():
-    """Load the T5-small model once to optimize performance."""
     global nlp_model
     if nlp_model is None:
-        device = 0 if torch.cuda.is_available() else -1  # Use GPU if available
-        nlp_model = pipeline('text2text-generation', model="t5-small", device=device)
+        device = 0 if torch.cuda.is_available() else -1
+        nlp_model = pipeline(
+            'text2text-generation',
+            model="google/flan-t5-base",  # <- better version
+            device=device
+        )
 
 def detect_task(user_text):
     """Detects the type of task and adjusts the input prompt."""
